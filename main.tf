@@ -1,33 +1,62 @@
+data "aws_caller_identity" "current" {
+}
+
+data "aws_region" "current" {
+}
+
+
 module "tags" {
   source  = "rhythmictech/tags/terraform"
   version = "~> 1.1.1"
 
   enforce_case = "UPPER"
-  names        = [var.name]
+  names        = ["Rhythmic-AccountMonitoring"]
   tags = merge(var.tags, {
-    "ManagedBy" = "Rhythmic"
-    "Type"      = "Cost"
+    "team"    = "Rhythmic"
+    "service" = "aws_managed_services"
+    "env"     = "ops"
   })
 }
 
 locals {
-  # tflint-ignore: terraform_unused_declarations
-  name = module.tags.name
-  # tflint-ignore: terraform_unused_declarations
-  tags = module.tags.tags_no_name
+  account_id = data.aws_caller_identity.current.account_id
+  region     = data.aws_region.current.name
+  tags       = module.tags.tags_no_name
 }
+
 resource "aws_sns_topic" "cost_alerts" {
-  name = "Rhythmic-CostAlerts"
-  #trivy:ignore:avd-aws-0136
-  kms_master_key_id = "alias/aws/sns"
+  name              = "Rhythmic-CostAlerts"
+  kms_master_key_id = "alias/rhythmic-core"
   tags              = local.tags
 }
 
 data "aws_iam_policy_document" "cost_alerts" {
   statement {
+    sid = "AllowCostAlerts"
     actions = [
       "sns:Publish"
     ]
+
+    principals {
+      type        = "Service"
+      identifiers = ["costalerts.amazonaws.com"]
+    }
+
+    resources = [
+      aws_sns_topic.cost_alerts.arn
+    ]
+  }
+
+  statement {
+    sid = "AllowBudgetAlerts"
+    actions = [
+      "sns:Publish"
+    ]
+
+    principals {
+      type        = "Service"
+      identifiers = ["budgets.amazonaws.com"]
+    }
 
     resources = [
       aws_sns_topic.cost_alerts.arn
@@ -38,35 +67,6 @@ data "aws_iam_policy_document" "cost_alerts" {
 resource "aws_sns_topic_policy" "cost_alerts" {
   arn    = aws_sns_topic.cost_alerts.arn
   policy = data.aws_iam_policy_document.cost_alerts.json
-}
-
-resource "aws_ce_anomaly_monitor" "cost_alerts" {
-  name              = "Rhythmic-DefaultAnomalyMonitor"
-  monitor_dimension = "SERVICE"
-  monitor_type      = "DIMENSIONAL"
-  tags              = local.tags
-}
-
-resource "aws_ce_anomaly_subscription" "cost_alerts" {
-  name             = "Rhythmic-DefaultAnomalySubscription"
-  frequency        = "DAILY"
-  monitor_arn_list = [aws_ce_anomaly_monitor.cost_alerts.arn]
-  tags             = local.tags
-
-  threshold_expression {
-    dimension {
-      key           = "ANOMALY_TOTAL_IMPACT_ABSOLUTE"
-      match_options = ["GREATER_THAN_OR_EQUAL"]
-      values        = ["10"]
-    }
-  }
-
-  subscriber {
-    type    = "SNS"
-    address = aws_sns_topic.cost_alerts.arn
-  }
-
-  depends_on = [aws_sns_topic_policy.cost_alerts]
 }
 
 data "aws_secretsmanager_secret" "datadog_api_key" {
