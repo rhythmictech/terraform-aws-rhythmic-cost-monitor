@@ -26,7 +26,7 @@ locals {
 
 resource "aws_sns_topic" "cost_alerts" {
   name              = "Rhythmic-CostAlerts"
-  kms_master_key_id = "alias/rhythmic-core"
+  kms_master_key_id = "alias/rhythmic-notifications"
   tags              = local.tags
 }
 
