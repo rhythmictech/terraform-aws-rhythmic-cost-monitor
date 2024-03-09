@@ -73,7 +73,7 @@ resource "aws_lambda_function" "monitor_sps_and_ris" {
   role             = aws_iam_role.monitor_sps_and_ris_execution.arn
   runtime          = "python3.9"
   filename         = data.archive_file.monitor_sps_and_ris.output_path
-  source_code_hash = filebase64sha256(data.archive_file.monitor_sps_and_ris.output_path)
+  source_code_hash = data.archive_file.monitor_sps_and_ris.output_base64sha256
   tags             = local.tags
 
   environment {
@@ -81,8 +81,6 @@ resource "aws_lambda_function" "monitor_sps_and_ris" {
       SNS_TOPIC_ARN = aws_sns_topic.cost_alerts.arn
     }
   }
-
-  depends_on = [data.archive_file.monitor_sps_and_ris]
 }
 
 #tfsec:ignore:avd-aws-0017
