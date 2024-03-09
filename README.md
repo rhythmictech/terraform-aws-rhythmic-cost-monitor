@@ -12,13 +12,15 @@ Configures AWS cost anomaly detection and budget services for monitoring
 Here's what using the module will look like
 ```hcl
 module "example" {
-  source = "rhythmictech/terraform-aws-rhythmic-cost-monitor
+  source = "rhythmictech/rhythmic-cost-monitor/aws"
   datadog_api_key_secret_arn = ""
 }
 ```
 
 ## About
-A bit about this module
+Rhythmic is an AWS Managed Services Provider. We rely heavily on automation to deliver our services, ingesting configuration, event and state information from AWS via listeners (e.g., EventBridge and SNS), services (e.g., Anomaly Detection), and APIs via custom scripts (e.g., Trusted Advisor).
+
+We open source the vast majority of the resources we use to deliver our managed services because transparency is one of our principles.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
