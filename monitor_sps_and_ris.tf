@@ -81,6 +81,8 @@ resource "aws_lambda_function" "monitor_sps_and_ris" {
       SNS_TOPIC_ARN = aws_sns_topic.cost_alerts.arn
     }
   }
+
+  depends_on = [data.archive_file.monitor_sps_and_ris]
 }
 
 #tfsec:ignore:avd-aws-0017
