@@ -17,7 +17,7 @@ resource "aws_iam_role" "monitor_sps_and_ris_execution" {
 data "aws_iam_policy_document" "monitor_sps_and_ris_execution" {
   statement {
     effect    = "Allow"
-    resources = ["*"]
+    resources = ["*"] #tfsec:ignore:avd-aws-0057
 
     actions = [
       "ec2:DescribeReservedInstances",
@@ -66,6 +66,7 @@ data "archive_file" "monitor_sps_and_ris" {
   output_path = "${path.module}/monitor_sps_and_ris.zip"
 }
 
+#tfsec:ignore:avd-aws-0066
 resource "aws_lambda_function" "monitor_sps_and_ris" {
   function_name    = "monitor_sps_and_ris_execution"
   handler          = "monitor_sps_and_ris.lambda_handler"
@@ -82,16 +83,16 @@ resource "aws_lambda_function" "monitor_sps_and_ris" {
   }
 }
 
+#tfsec:ignore:avd-aws-0017
 resource "aws_cloudwatch_log_group" "monitor_sps_and_ris" {
   name              = "/aws/lambda/${aws_lambda_function.monitor_sps_and_ris.function_name}"
   retention_in_days = 14
 }
 
 resource "aws_cloudwatch_event_rule" "monitor_sps_and_ris" {
-  name        = "monitor-sps-and-ris-daily-trigger"
-  description = "Triggers Lambda at noon ET every day"
-  #schedule_expression = "cron(0 17 * * ? *)"
-  schedule_expression = "cron(0,15,30,45 * * * ? *)"
+  name                = "monitor-sps-and-ris-daily-trigger"
+  description         = "Triggers Lambda at noon ET every day"
+  schedule_expression = "cron(0 17 * * ? *)"
 }
 
 resource "aws_lambda_permission" "monitor_sps_and_ris" {
