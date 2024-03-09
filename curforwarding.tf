@@ -1,5 +1,5 @@
 locals {
-  remote_bucket_arn = var.enable_cur_collection ? var.cur_forwarding_bucket_arn : "arn:aws:s3:::example-bucket"
+  remote_bucket_arn = var.enable_cur_collection ? try(var.cur_forwarding_bucket_arn, "") : "arn:aws:s3:::example-bucket"
 }
 
 data "aws_iam_policy_document" "cur_assume" {
