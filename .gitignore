@@ -1,9 +1,5 @@
-*.zip
-
 #  Local .terraform directories
 **/.terraform/*
-
-examples/**/.terraform.lock.hcl
 
 # .tfstate files
 *.tfstate
@@ -17,3 +13,9 @@ examples/**/.terraform.lock.hcl
 
 # temp folders
 tmp
+
+# modules should not submit lock files
+.terraform.lock.hcl
+
+# lambda related files
+monitor_sps_and_ris.zip
