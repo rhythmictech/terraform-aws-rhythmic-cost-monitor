@@ -28,7 +28,7 @@ variable "anomaly_total_impact_percentage_threshold" {
 # Budget Vars
 ########################################
 variable "monitor_ri_utilization" {
-  description = "Enable monitoring of Reserverd Instances Utilization"
+  description = "Enable monitoring of Reserved Instances Utilization"
   type        = bool
   default     = false
 }
