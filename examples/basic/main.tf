@@ -2,7 +2,7 @@
 module "example" {
   source = "../.."
 
-  datadog_api_key_secret_arn = aws_secretsmanager_secret.datadog_api_key.arn
+  datadog_api_key_secret_arn = "arn:aws:secretsmanager:us-east-1:123456789012:secret:datadog-1we4dj"
 
   # Anomaly detection vars
   anomaly_total_impact_percentage_threshold = 5
