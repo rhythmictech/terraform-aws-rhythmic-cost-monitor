@@ -14,4 +14,8 @@
 # temp folders
 tmp
 
+# modules should not submit lock files
 .terraform.lock.hcl
+
+# lambda related files
+monitor_sps_and_ris.zip
