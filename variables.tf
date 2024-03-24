@@ -12,6 +12,18 @@ variable "datadog_api_key_secret_arn" {
 ########################################
 # Anomaly Detection Vars
 ########################################
+variable "anomaly_cost_monitor_name" {
+  default     = "Rhythmic-DefaultAnomalyMonitor"
+  description = "Name of Anomaly Detection Cost Monitor"
+  type        = string
+}
+
+variable "anomaly_cost_subscription_name" {
+  default     = "Rhythmic-DefaultAnomalySubscription"
+  description = "Name of Anomaly Detection Cost Subscription"
+  type        = string
+}
+
 variable "anomaly_total_impact_absolute_threshold" {
   description = "Minimum dollar threshold"
   type        = number

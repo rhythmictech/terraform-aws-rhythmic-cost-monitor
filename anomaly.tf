@@ -1,12 +1,12 @@
 resource "aws_ce_anomaly_monitor" "cost_alerts" {
-  name              = "Rhythmic-DefaultAnomalyMonitor"
+  name              = var.anomaly_cost_monitor_name
   monitor_dimension = "SERVICE"
   monitor_type      = "DIMENSIONAL"
   tags              = local.tags
 }
 
 resource "aws_ce_anomaly_subscription" "cost_alerts" {
-  name             = "Rhythmic-DefaultAnomalySubscription"
+  name             = var.anomaly_cost_subscription_name
   frequency        = "IMMEDIATE"
   monitor_arn_list = [aws_ce_anomaly_monitor.cost_alerts.arn]
   tags             = local.tags
