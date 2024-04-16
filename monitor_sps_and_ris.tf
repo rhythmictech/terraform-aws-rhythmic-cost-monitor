@@ -10,7 +10,7 @@ data "aws_iam_policy_document" "lambda_assume" {
 }
 
 resource "aws_iam_role" "monitor_sps_and_ris_execution" {
-  name_prefix        = "Rhythmic-MonitorSPsAndRIs"
+  name_prefix        = "${var.name_prefix}-MonitorSPsAndRIs"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume.json
 }
 
@@ -48,11 +48,30 @@ data "aws_iam_policy_document" "monitor_sps_and_ris_execution" {
       "sns:Publish"
     ]
   }
+
+  statement {
+    effect    = "Allow"
+    resources = [aws_sns_topic.cost_alerts.arn]
+
+    actions = [
+      "sns:Publish"
+    ]
+  }
+
+  statement {
+    effect    = "Allow"
+    resources = [data.aws_kms_alias.notifications.target_key_arn]
+
+    actions = [
+      "kms:Decrypt",
+      "kms:GenerateDataKey"
+    ]
+  }
 }
 
 resource "aws_iam_policy" "monitor_sps_and_ris_execution" {
-  name   = "lambda_policy"
-  policy = data.aws_iam_policy_document.monitor_sps_and_ris_execution.json
+  name_prefix = "${var.name_prefix}-MonitorSPsAndRIs"
+  policy      = data.aws_iam_policy_document.monitor_sps_and_ris_execution.json
 }
 
 resource "aws_iam_role_policy_attachment" "monitor_sps_and_ris_execution" {
@@ -68,7 +87,7 @@ data "archive_file" "monitor_sps_and_ris" {
 
 #tfsec:ignore:avd-aws-0066
 resource "aws_lambda_function" "monitor_sps_and_ris" {
-  function_name    = "monitor_sps_and_ris_execution"
+  function_name    = "${var.name_prefix}monitor_sps_and_ris_execution"
   handler          = "monitor_sps_and_ris.lambda_handler"
   role             = aws_iam_role.monitor_sps_and_ris_execution.arn
   runtime          = "python3.9"
