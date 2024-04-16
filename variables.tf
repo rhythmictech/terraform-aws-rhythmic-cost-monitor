@@ -9,6 +9,12 @@ variable "datadog_api_key_secret_arn" {
   type        = string
 }
 
+variable "name_prefix" {
+  default     = "rhythmic-"
+  description = "Prefix for all resource names"
+  type        = string
+}
+
 ########################################
 # Anomaly Detection Vars
 ########################################

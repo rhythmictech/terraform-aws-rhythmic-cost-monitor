@@ -86,6 +86,7 @@ We open source the vast majority of the resources we use to deliver our managed 
 | [aws_iam_policy_document.lambda_assume](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.local_cur](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.monitor_sps_and_ris_execution](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_kms_alias.notifications](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/kms_alias) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 | [aws_secretsmanager_secret.datadog_api_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret) | data source |
 | [aws_secretsmanager_secret_version.datadog_api_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret_version) | data source |
@@ -105,6 +106,7 @@ We open source the vast majority of the resources we use to deliver our managed 
 | <a name="input_enable_datadog_cost_management"></a> [enable\_datadog\_cost\_management](#input\_enable\_datadog\_cost\_management) | Enable Datadog cost management | `bool` | `false` | no |
 | <a name="input_monitor_ri_utilization"></a> [monitor\_ri\_utilization](#input\_monitor\_ri\_utilization) | Enable monitoring of Reserved Instances Utilization | `bool` | `false` | no |
 | <a name="input_monitor_sp_utilization"></a> [monitor\_sp\_utilization](#input\_monitor\_sp\_utilization) | Enable monitoring of Savings Plan Utilization | `bool` | `false` | no |
+| <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | Prefix for all resource names | `string` | `"rhythmic-"` | no |
 | <a name="input_ri_utilization_services"></a> [ri\_utilization\_services](#input\_ri\_utilization\_services) | List of services for Reserved Instance utilization monitoring | `list(string)` | <pre>[<br>  "ec2",<br>  "elasticache",<br>  "es",<br>  "opensearch",<br>  "rds",<br>  "redshift"<br>]</pre> | no |
 | <a name="input_service_budgets"></a> [service\_budgets](#input\_service\_budgets) | Map of service budgets | <pre>map(object({<br>    time_unit : string<br>    limit_amount : string<br>    limit_unit : string<br>    threshold : number<br>    threshold_type : string<br>    notification_type : string<br>  }))</pre> | <pre>{<br>  "ec2": {<br>    "limit_amount": "5",<br>    "limit_unit": "USD",<br>    "notification_type": "ACTUAL",<br>    "threshold": 90,<br>    "threshold_type": "PERCENTAGE",<br>    "time_unit": "MONTHLY"<br>  }<br>}</pre> | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | User-Defined tags | `map(string)` | `{}` | no |
