@@ -1,0 +1,137 @@
+
+resource "aws_s3_bucket" "cur_aggregator" {
+  bucket = "${local.account_id}-${local.region}-aggregated-customer-cur"
+  tags   = local.tags
+}
+
+resource "aws_s3_bucket_versioning" "cur_aggregator" {
+  bucket = aws_s3_bucket.cur_aggregator.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "cur_aggregator" {
+  bucket = aws_s3_bucket.cur_aggregator.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "cur_aggregator" {
+  bucket = aws_s3_bucket.cur_aggregator.id
+
+  rule {
+    id     = "Object&Version Expiration"
+    status = "Enabled"
+
+    noncurrent_version_expiration {
+      noncurrent_days = 32
+    }
+  }
+}
+
+resource "aws_s3_bucket_public_access_block" "cur_aggregator" {
+  bucket = aws_s3_bucket.cur_aggregator.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+resource "aws_s3_bucket_policy" "cur_aggregator" {
+  bucket = aws_s3_bucket.cur_aggregatorcur_aggregatorcur_aggregatorcur_aggregatorcur_aggregatorcur_aggregatorcur_aggregatorcur_aggregatorcur_aggregator.id
+  policy = data.aws_iam_policy_document.cur_aggregator.json
+}
+
+data "aws_iam_policy_document" "cur_aggregator" {
+  statement {
+    sid    = "AllowTLS12Only"
+    effect = "Deny"
+
+    principals {
+      identifiers = ["*"]
+      type        = "AWS"
+    }
+
+    actions = ["s3:*"]
+
+    resources = [
+      aws_s3_bucket.cur_aggregator.arn,
+      "${aws_s3_bucket.cur_aggregator.arn}/*",
+    ]
+
+    condition {
+      test     = "NumericLessThan"
+      variable = "s3:TlsVersion"
+      values   = ["1.2"]
+    }
+  }
+
+  statement {
+    sid    = "RequireHTTPS"
+    effect = "Deny"
+
+    principals {
+      identifiers = ["*"]
+      type        = "AWS"
+    }
+
+    actions = ["s3:*"]
+
+    resources = [
+      aws_s3_bucket.cur_aggregator.arn,
+      "${aws_s3_bucket.cur_aggregator.arn}/*",
+    ]
+
+    condition {
+      test     = "Bool"
+      variable = "aws:SecureTransport"
+      values   = ["false"]
+    }
+  }
+ statement {
+    sid    = "AllowLocalWrite"
+    effect = "Allow"
+    actions = ["s3:PutObjet"]
+    resources = ["${aws_s3_bucket.cur_aggregator.arn}/*"]
+
+    principals {
+      identifiers = ["*"]
+      type        = "billingreports.amazonaws.com"
+    }
+
+    condition {
+      test     = "Bool"
+      variable = "aws:SecureTransport"
+      values   = ["false"]
+    }
+ }
+ statement {
+    sid    = "AllowSourceWrite"
+    effect = "Allow"
+    actions = ["s3:ReplicateDelete", "s3:ReplicateObject"]
+    resources = ["${aws_s3_bucket.cur_aggregator.arn}/*"]
+
+    principals {
+      identifiers = [var.cur_source_account_ids]
+      type        = "AWS"
+    }
+ }
+  statement {
+    sid    = "AllowSourceWrite"
+    effect = "Allow"
+    actions = ["s3:List*", "s3:GetBucketVersioning, s3:PutBucketVersioning"]
+    resources = [aws_s3_bucket.cur_aggregator.arn]
+
+    principals {
+      identifiers = [var.cur_source_account_ids]
+      type        = "AWS"
+    }
+ }
+}

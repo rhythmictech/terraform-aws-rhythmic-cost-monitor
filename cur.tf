@@ -181,7 +181,7 @@ data "aws_iam_policy_document" "datadog_cost_policy" {
 resource "aws_iam_policy" "datadog_cost_policy" {
   count = var.enable_cur_collection && var.enable_datadog_cost_management ? 1 : 0
 
-  name        = "DatadogCostPolicy"
+  name        = "${var.name_prefix}DatadogCostPolicy"
   description = "IAM policy for Datadog cloud cost management"
   policy      = data.aws_iam_policy_document.datadog_cost_policy.json
 }

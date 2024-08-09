@@ -17,7 +17,7 @@ data "aws_iam_policy_document" "cur_assume" {
 resource "aws_iam_role" "cur_forwarding" {
   count = var.enable_cur_collection ? 1 : 0
 
-  name_prefix        = "cur_forwarding"
+  name_prefix        = "${var.name_prefix}cur_forwarding"
   assume_role_policy = data.aws_iam_policy_document.cur_assume.json
 }
 
@@ -61,7 +61,7 @@ data "aws_iam_policy_document" "cur_forwarding" {
 resource "aws_iam_policy" "cur_forwarding" {
   count = var.enable_cur_collection ? 1 : 0
 
-  name_prefix = "cur-forwarding"
+  name_prefix = "${var.name_prefix}cur-forwarding"
   policy      = data.aws_iam_policy_document.cur_forwarding.json
 }
 
