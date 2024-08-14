@@ -1,7 +1,7 @@
 resource "aws_budgets_budget" "service" {
   for_each = var.service_budgets
 
-  name         = "budget-${each.key}-${var.service_budgets[each.key].time_unit}"
+  name         = "${var.name_prefix}budget-${each.key}-${var.service_budgets[each.key].time_unit}"
   budget_type  = "COST"
   limit_amount = var.service_budgets[each.key].limit_amount
   limit_unit   = var.service_budgets[each.key].limit_unit
@@ -29,7 +29,7 @@ locals {
 resource "aws_budgets_budget" "ri_utilization" {
   for_each = toset(local.ri_services)
 
-  name         = "budget-RI-${var.aws_service_shorthand_map[each.key]}"
+  name         = "${var.name_prefix}budget-RI-${var.aws_service_shorthand_map[each.key]}"
   budget_type  = "RI_UTILIZATION"
   limit_amount = "100.0"
   limit_unit   = "PERCENTAGE"
@@ -67,7 +67,7 @@ resource "aws_budgets_budget" "ri_utilization" {
 resource "aws_budgets_budget" "sp_utilization" {
   count = var.monitor_sp_utilization ? 1 : 0
 
-  name         = "budget-SavingsPlan-UTILIZATION"
+  name         = "${var.name_prefix}budget-SavingsPlan-UTILIZATION"
   budget_type  = "SAVINGS_PLANS_UTILIZATION"
   limit_amount = "100.0"
   limit_unit   = "PERCENTAGE"
