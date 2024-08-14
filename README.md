@@ -104,8 +104,8 @@ We open source the vast majority of the resources we use to deliver our managed 
 | <a name="input_datadog_api_key_secret_arn"></a> [datadog\_api\_key\_secret\_arn](#input\_datadog\_api\_key\_secret\_arn) | ARN of the AWS Secret containing the Datadog API key | `string` | n/a | yes |
 | <a name="input_enable_cur_collection"></a> [enable\_cur\_collection](#input\_enable\_cur\_collection) | Enable Cost and Usage Report collection for aggregation in a QuickSight CUDOS project. Be mindful of existing CUR collection processes before enabling. | `bool` | `false` | no |
 | <a name="input_enable_datadog_cost_management"></a> [enable\_datadog\_cost\_management](#input\_enable\_datadog\_cost\_management) | Enable Datadog cost management | `bool` | `false` | no |
-| <a name="input_expiring_sps_and_ris_alert_exp"></a> [expiring\_sps\_and\_ris\_alert\_exp](#input\_expiring\_sps\_and\_ris\_alert\_exp) | Alert expiration threshold for SPs and RIs | `number` | n/a | yes |
-| <a name="input_expiring_sps_and_ris_warning_exp"></a> [expiring\_sps\_and\_ris\_warning\_exp](#input\_expiring\_sps\_and\_ris\_warning\_exp) | Warning expiration threshold for SPs and RIs | `number` | n/a | yes |
+| <a name="input_expiring_sps_and_ris_alert_exp"></a> [expiring\_sps\_and\_ris\_alert\_exp](#input\_expiring\_sps\_and\_ris\_alert\_exp) | Alert expiration threshold for SPs and RIs | `number` | `7` | no |
+| <a name="input_expiring_sps_and_ris_warning_exp"></a> [expiring\_sps\_and\_ris\_warning\_exp](#input\_expiring\_sps\_and\_ris\_warning\_exp) | Warning expiration threshold for SPs and RIs | `number` | `30` | no |
 | <a name="input_monitor_ri_utilization"></a> [monitor\_ri\_utilization](#input\_monitor\_ri\_utilization) | Enable monitoring of Reserved Instances Utilization | `bool` | `false` | no |
 | <a name="input_monitor_sp_utilization"></a> [monitor\_sp\_utilization](#input\_monitor\_sp\_utilization) | Enable monitoring of Savings Plan Utilization | `bool` | `false` | no |
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | Prefix for all resource names | `string` | `"rhythmic-"` | no |

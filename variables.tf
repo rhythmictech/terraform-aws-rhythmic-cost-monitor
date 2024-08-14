@@ -226,11 +226,13 @@ variable "cur_forwarding_bucket_arn" {
 # Expiring SPs and RIs vars
 #######################################
 variable "expiring_sps_and_ris_warning_exp" {
+  default     = 30
   description = "Warning expiration threshold for SPs and RIs"
   type        = number
 }
 
 variable "expiring_sps_and_ris_alert_exp" {
+  default     = 7
   description = "Alert expiration threshold for SPs and RIs"
   type        = number
 }
