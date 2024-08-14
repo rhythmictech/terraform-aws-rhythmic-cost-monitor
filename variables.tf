@@ -201,7 +201,9 @@ variable "aws_service_shorthand_map" {
   }
 }
 
+########################################
 # Cost and Usage aggregation vars
+########################################
 variable "enable_cur_collection" {
   description = "Enable Cost and Usage Report collection for aggregation in a QuickSight CUDOS project. Be mindful of existing CUR collection processes before enabling."
   type        = bool
@@ -218,4 +220,17 @@ variable "cur_forwarding_bucket_arn" {
   default     = null
   description = "S3 bucket ARN where CUR data will be forwarded"
   type        = string
+}
+
+#######################################
+# Expiring SPs and RIs vars
+#######################################
+variable "expiring_sps_and_ris_warning_exp" {
+  description = "Warning expiration threshold for SPs and RIs"
+  type        = number
+}
+
+variable "expiring_sps_and_ris_alert_exp" {
+  description = "Alert expiration threshold for SPs and RIs"
+  type        = number
 }
