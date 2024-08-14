@@ -109,7 +109,7 @@ resource "aws_cloudwatch_event_target" "monitor_sps_and_ris" {
   arn       = aws_lambda_function.monitor_sps_and_ris.arn
 
   input = jsonencode({
-    "warning_exp" : "600",
-    "alert_exp" : "500"
+    "warning_exp" : var.expiring_sps_and_ris_warning_exp,
+    "alert_exp" : var.expiring_sps_and_ris_alert_exp
   })
 }
