@@ -15,6 +15,12 @@ variable "name_prefix" {
   type        = string
 }
 
+variable "sns_subscription_endpoint" {
+  description = "HTTPS endpoint for SNS subscription. If not specified, defaults to Datadog webhook"
+  type        = string
+  default     = null
+}
+
 ########################################
 # Anomaly Detection Vars
 ########################################
