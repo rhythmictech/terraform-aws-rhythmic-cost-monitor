@@ -26,7 +26,7 @@ locals {
   endpoint = coalesce(
     var.sns_subscription_endpoint,
     try(
-      "https://app.datadoghq.com/intake/webhook/sns?api_key=${data.aws_secretsmanager_secret_version.datadog_api_key.secret_string}",
+      "https://app.datadoghq.com/intake/webhook/sns?api_key=${data.aws_secretsmanager_secret_version.datadog_api_key[0].secret_string}",
       null
     )
   )
