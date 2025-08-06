@@ -41,7 +41,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "local_cur" {
   rule {
     id     = "Object&Version Expiration"
     status = "Enabled"
-    
+
     filter {}
 
     noncurrent_version_expiration {
@@ -208,6 +208,7 @@ resource "aws_cur_report_definition" "cur" {
   refresh_closed_reports     = true
   report_versioning          = "OVERWRITE_REPORT"
   s3_bucket                  = aws_s3_bucket.local_cur[0].id
+  s3_prefix                  = "reports"
   s3_region                  = "us-east-1"
   time_unit                  = "HOURLY"
 
