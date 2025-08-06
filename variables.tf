@@ -7,12 +7,19 @@ variable "tags" {
 variable "datadog_api_key_secret_arn" {
   description = "ARN of the AWS Secret containing the Datadog API key"
   type        = string
+  default     = null
 }
 
 variable "name_prefix" {
   default     = "rhythmic-"
   description = "Prefix for all resource names"
   type        = string
+}
+
+variable "sns_subscription_endpoint" {
+  description = "HTTPS endpoint for SNS subscription. If not specified, defaults to Datadog webhook"
+  type        = string
+  default     = null
 }
 
 ########################################
