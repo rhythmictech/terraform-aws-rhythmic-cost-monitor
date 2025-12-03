@@ -63,6 +63,9 @@ def lambda_handler(event, context):
     # Iterate over RDS Reserved Instances
     rds_ris = rds_client.describe_reserved_db_instances()
     for ri in rds_ris['ReservedDBInstances']:
+        if 'EndTime' not in ri:
+            continue
+
         expiration_date = ri['EndTime']
         days_until_expiration = (expiration_date - now).days
 
