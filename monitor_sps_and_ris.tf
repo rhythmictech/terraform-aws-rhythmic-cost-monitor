@@ -90,7 +90,7 @@ resource "aws_lambda_function" "monitor_sps_and_ris" {
   function_name    = "${var.name_prefix}monitor_sps_and_ris_execution"
   handler          = "monitor_sps_and_ris.lambda_handler"
   role             = aws_iam_role.monitor_sps_and_ris_execution.arn
-  runtime          = "python3.9"
+  runtime          = "python3.13"
   filename         = data.archive_file.monitor_sps_and_ris.output_path
   source_code_hash = data.archive_file.monitor_sps_and_ris.output_base64sha256
   tags             = local.tags
