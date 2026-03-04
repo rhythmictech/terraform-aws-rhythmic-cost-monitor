@@ -31,7 +31,7 @@ data "aws_iam_policy_document" "monitor_sps_and_ris_execution" {
 
   statement {
     effect    = "Allow"
-    resources = ["arn:aws:logs:${local.region}:${local.account_id}:log-group:/aws/lambda/monitor_sps_and_ris_execution:*"]
+    resources = ["arn:aws:logs:${local.region}:${local.account_id}:log-group:/aws/lambda/${var.name_prefix}monitor_sps_and_ris_execution:*"]
 
     actions = [
       "logs:CreateLogGroup",

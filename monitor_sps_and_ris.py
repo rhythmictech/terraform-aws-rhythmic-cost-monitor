@@ -80,6 +80,8 @@ def lambda_handler(event, context):
     # Iterate over Redshift Reserved Nodes
     redshift_nodes = redshift_client.describe_reserved_nodes()
     for node in redshift_nodes['ReservedNodes']:
+        if 'EndTime' not in node:
+            continue
         expiration_date = node['EndTime']
         days_until_expiration = (expiration_date - now).days
 
